@@ -1,0 +1,5 @@
+exclude:
+  - CLAUDE.md
+  - COPY.ru.md
+  - IMAGE_PROMPTS.md
+  - tools
