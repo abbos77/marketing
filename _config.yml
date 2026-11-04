@@ -3,3 +3,4 @@ exclude:
   - COPY.ru.md
   - IMAGE_PROMPTS.md
   - tools
+  - assets/img/src
