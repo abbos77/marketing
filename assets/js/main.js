@@ -1,0 +1,120 @@
+/* Abbos — Meta Ads. Анимации и мелкая логика. Vanilla JS, без зависимостей. */
+(() => {
+  const root = document.documentElement;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  /* ---------- шапка: стекло после прокрутки ---------- */
+  const head = document.querySelector('.site-head');
+  const onScrollHead = () => head && head.classList.toggle('is-scrolled', scrollY > 24);
+  onScrollHead();
+  addEventListener('scroll', onScrollHead, { passive: true });
+
+  /* ---------- появление при прокрутке ---------- */
+  const revealEls = document.querySelectorAll('[data-reveal]');
+  if (reduce || !('IntersectionObserver' in window)) {
+    revealEls.forEach(el => el.classList.add('is-in'));
+  } else {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    revealEls.forEach(el => io.observe(el));
+  }
+
+  if (reduce) return;
+
+  /* ---------- hero: параллакс от мыши и прокрутки ---------- */
+  const hero = document.querySelector('.hero-zone');
+  const target = { x: 0, y: 0, mx: -999, my: -999 };
+  const cur = { x: 0, y: 0, mx: -999, my: -999 };
+  let heroVisible = true;
+
+  if (hero) {
+    new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; }).observe(hero);
+    if (finePointer) {
+      hero.addEventListener('pointermove', e => {
+        const r = hero.getBoundingClientRect();
+        target.x = ((e.clientX - r.left) / r.width - 0.5) * 2;
+        target.y = ((e.clientY - r.top) / r.height - 0.5) * 2;
+        target.mx = e.clientX - r.left;
+        target.my = e.clientY - r.top;
+        if (cur.mx < -900) { cur.mx = target.mx; cur.my = target.my; }
+      });
+      hero.addEventListener('pointerleave', () => { target.x = 0; target.y = 0; });
+    }
+  }
+
+  /* ---------- бегущие полосы: постоянный ход + ускорение и смена направления от скролла ---------- */
+  const tracks = [...document.querySelectorAll('.band__track')].map(el => ({
+    el, x: 0, w: 0, speed: parseFloat(el.dataset.speed || '1'),
+  }));
+  const measure = () => tracks.forEach(t => { t.w = t.el.scrollWidth / 2; });
+  measure();
+  addEventListener('resize', measure);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+
+  let lastY = scrollY, vel = 0, dir = 1, last = performance.now();
+
+  function frame(now) {
+    const dt = Math.min(64, now - last) / 1000; last = now;
+    const y = scrollY, dy = y - lastY; lastY = y;
+    if (dy !== 0) dir = dy > 0 ? 1 : -1;
+    vel += ((dt ? Math.abs(dy) / dt : 0) - vel) * 0.12;          // сглаженная скорость, px/s
+    const boost = Math.min(vel * 0.35, 900);
+
+    for (const t of tracks) {
+      if (!t.w) continue;
+      t.x -= t.speed * dir * (70 + boost) * dt;
+      t.x = ((t.x % t.w) + t.w) % t.w - t.w;                        // держим в (−w, 0]
+      t.el.style.transform = `translate3d(${t.x.toFixed(2)}px,0,0)`;
+    }
+
+    if (hero && heroVisible) {
+      cur.x += (target.x - cur.x) * 0.075;
+      cur.y += (target.y - cur.y) * 0.075;
+      cur.mx += (target.mx - cur.mx) * 0.12;
+      cur.my += (target.my - cur.my) * 0.12;
+      const sp = Math.max(0, Math.min(1, y / (hero.offsetHeight || 1)));
+      const s = hero.style;
+      s.setProperty('--px', cur.x.toFixed(4));
+      s.setProperty('--py', cur.y.toFixed(4));
+      s.setProperty('--sp', sp.toFixed(4));
+      s.setProperty('--mx', cur.mx.toFixed(1));
+      s.setProperty('--my', cur.my.toFixed(1));
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  if (!finePointer) return;
+
+  /* ---------- карточки: 3D-наклон за курсором ---------- */
+  document.querySelectorAll('[data-tilt]').forEach(card => {
+    card.addEventListener('pointermove', e => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      card.classList.add('is-tilting');
+      card.style.setProperty('--rx', ((0.5 - py) * 9).toFixed(2) + 'deg');
+      card.style.setProperty('--ry', ((px - 0.5) * 11).toFixed(2) + 'deg');
+      card.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+      card.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+    });
+    card.addEventListener('pointerleave', () => {
+      card.classList.remove('is-tilting');
+      card.style.setProperty('--rx', '0deg');
+      card.style.setProperty('--ry', '0deg');
+    });
+  });
+
+  /* ---------- «магнитная» кнопка ---------- */
+  document.querySelectorAll('[data-magnet]').forEach(btn => {
+    btn.addEventListener('pointermove', e => {
+      const r = btn.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+      btn.style.transform = `translate(${(dx * 0.22).toFixed(1)}px, ${(dy * 0.35).toFixed(1)}px)`;
+    });
+    btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
+  });
+})();

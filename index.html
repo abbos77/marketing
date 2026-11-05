@@ -11,12 +11,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/img/hero-abbos.webp" type="image/webp">
 <link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.classList.add('js')</script>
+<script src="assets/js/main.js" defer></script>
 </head>
 <body>
 
-<div class="dark">
-  <header class="top wrap">
+<header class="site-head">
+  <div class="top wrap">
     <a class="logo" href="#top" aria-label="Abbos — на главную">abbos<span aria-hidden="true">.</span></a>
     <nav class="nav" aria-label="Разделы">
       <a href="#services">Услуги</a>
@@ -34,11 +37,15 @@
         <span class="hide-sm">Telegram</span>
       </a>
     </div>
-  </header>
+  </div>
+</header>
 
-  <main id="top">
+<main id="top">
 
-    <!-- 1. HERO -->
+  <!-- 1. HERO -->
+  <div class="dark hero-zone">
+    <span class="spot" aria-hidden="true"></span>
+
     <section class="hero wrap" aria-labelledby="hero-title">
       <div class="hero__top">
         <p class="eyebrow">Abbos / Meta Ads / Ташкент / 2026</p>
@@ -56,7 +63,7 @@
 
       <div class="hero__cta">
         <div class="hero__btns">
-          <a class="btn btn--accent" href="https://t.me/bossja999" target="_blank" rel="noopener" data-event="Contact">
+          <a class="btn btn--accent" href="https://t.me/bossja999" target="_blank" rel="noopener" data-event="Contact" data-magnet>
             Бесплатная диагностика
             <span class="btn__arrow" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
           </a>
@@ -67,7 +74,7 @@
 
       <div class="hero__visual">
         <span class="hero__ghost" aria-hidden="true">Abbos</span>
-        <span class="hero__rings" aria-hidden="true"></span>
+        <span class="hero__rings" aria-hidden="true"><i></i><i></i></span>
         <span class="hero__sun" aria-hidden="true"></span>
         <img class="hero__photo" src="assets/img/hero-abbos.webp" width="801" height="900" alt="Аббос — специалист по рекламе Meta Ads" fetchpriority="high">
 
@@ -90,27 +97,94 @@
           <b>2,5 года</b>
           <span>в Meta Pro Team</span>
         </div>
+
+        <div class="coins" aria-hidden="true">
+          <span class="coin coin--som" style="--d:1.3"><img src="assets/img/3d/coin-som.webp" width="440" height="454" alt=""></span>
+          <span class="coin coin--usd" style="--d:-1"><img src="assets/img/3d/coin-usd.webp" width="440" height="452" alt=""></span>
+          <span class="coin coin--kzt" style="--d:2"><img src="assets/img/3d/coin-kzt.webp" width="440" height="452" alt=""></span>
+        </div>
       </div>
     </section>
+  </div>
 
-    <!-- 2. ЛЕНТЫ -->
-    <div class="bands" aria-hidden="true">
-      <div class="band band--accent">
-        <div class="band__track">
-          <span>Арбитраж <i>✦</i> Не бан <i>✦</i> Не приговор <i>✦</i> Арбитраж <i>✦</i> Не бан <i>✦</i> Не приговор <i>✦</i> </span>
-          <span>Арбитраж <i>✦</i> Не бан <i>✦</i> Не приговор <i>✦</i> Арбитраж <i>✦</i> Не бан <i>✦</i> Не приговор <i>✦</i> </span>
-        </div>
-      </div>
-      <div class="band band--light">
-        <div class="band__track band__track--rev">
-          <span>Meta Ads <i>✦</i> Разблокировка <i>✦</i> Арбитраж <i>✦</i> Аудит <i>✦</i> Meta Ads <i>✦</i> Разблокировка <i>✦</i> Арбитраж <i>✦</i> Аудит <i>✦</i> </span>
-          <span>Meta Ads <i>✦</i> Разблокировка <i>✦</i> Арбитраж <i>✦</i> Аудит <i>✦</i> Meta Ads <i>✦</i> Разблокировка <i>✦</i> Арбитраж <i>✦</i> Аудит <i>✦</i> </span>
-        </div>
+  <!-- 2. ЛЕНТЫ -->
+  <div class="bands" aria-hidden="true">
+    <div class="band band--accent">
+      <div class="band__track" data-speed="1">
+        <span>Арбитраж <i>✦</i> Не бан <i>✦</i> Не приговор <i>✦</i> Арбитраж <i>✦</i> Не бан <i>✦</i> Не приговор <i>✦</i> </span>
+        <span>Арбитраж <i>✦</i> Не бан <i>✦</i> Не приговор <i>✦</i> Арбитраж <i>✦</i> Не бан <i>✦</i> Не приговор <i>✦</i> </span>
       </div>
     </div>
+    <div class="band band--light">
+      <div class="band__track band__track--rev" data-speed="-0.8">
+        <span>Meta Ads <i>✦</i> Разблокировка <i>✦</i> Арбитраж <i>✦</i> Аудит <i>✦</i> Meta Ads <i>✦</i> Разблокировка <i>✦</i> Арбитраж <i>✦</i> Аудит <i>✦</i> </span>
+        <span>Meta Ads <i>✦</i> Разблокировка <i>✦</i> Арбитраж <i>✦</i> Аудит <i>✦</i> Meta Ads <i>✦</i> Разблокировка <i>✦</i> Арбитраж <i>✦</i> Аудит <i>✦</i> </span>
+      </div>
+    </div>
+  </div>
 
-  </main>
-</div>
+  <!-- 3. УСЛУГИ -->
+  <section class="services" id="services" aria-labelledby="services-title">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <p class="eyebrow eyebrow--light">Услуги</p>
+        <h2 class="h2" id="services-title">С чем <em>помогаю</em></h2>
+      </div>
+
+      <div class="svc-grid">
+        <article class="svc svc--white" data-tilt data-reveal style="--i:0">
+          <div class="svc__in">
+            <div class="svc__meta"><span class="svc__num">01</span><span class="tag tag--ink">самое частое</span></div>
+            <h3 class="svc__title">Снятие ограничений</h3>
+            <p class="svc__text">Заблокирован рекламный кабинет, страница, профиль или бизнес-портфолио? Найду реальную причину ограничения, подготовлю апелляцию, которую читают, и проведу до ответа поддержки.</p>
+            <a class="svc__go" href="https://t.me/bossja999" target="_blank" rel="noopener" data-event="Contact" aria-label="Снятие ограничений — написать в Telegram"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+          </div>
+          <img class="svc__obj obj-lock" src="assets/img/3d/lock.webp" width="560" height="705" alt="" loading="lazy" aria-hidden="true">
+          <img class="svc__obj obj-chain" src="assets/img/3d/chain.webp" width="760" height="392" alt="" loading="lazy" aria-hidden="true">
+        </article>
+
+        <article class="svc svc--dark" data-tilt data-reveal style="--i:1">
+          <div class="svc__in">
+            <div class="svc__meta"><span class="svc__num">02</span><span class="tag tag--urgent">срочно</span></div>
+            <h3 class="svc__title">Взлом и фишинг</h3>
+            <p class="svc__text">Потеряли доступ, сменились админы, списали деньги с карты? Помогу восстановить доступ, убрать чужих, защитить аккаунт и научу отличать фишинговое «письмо от Meta» от настоящего.</p>
+            <a class="svc__go" href="https://t.me/bossja999" target="_blank" rel="noopener" data-event="Contact" aria-label="Взлом и фишинг — написать в Telegram"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+          </div>
+          <img class="svc__obj obj-shield" src="assets/img/3d/shield.webp" width="560" height="649" alt="" loading="lazy" aria-hidden="true">
+        </article>
+
+        <article class="svc svc--accent" data-tilt data-reveal style="--i:2">
+          <div class="svc__in">
+            <div class="svc__meta"><span class="svc__num">03</span><span class="tag tag--free">бесплатно</span></div>
+            <h3 class="svc__title">Аудит рекламы</h3>
+            <p class="svc__text">Посмотрю ваши кампании или бизнес-страницу и скажу, где теряются деньги и что может привести к бану. Без воды — конкретный список правок.</p>
+            <a class="svc__go" href="#audit" aria-label="Получить аудит бесплатно"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+          </div>
+          <svg class="svc__deco deco-scan" viewBox="0 0 200 200" aria-hidden="true"><circle cx="86" cy="86" r="58"/><path d="m130 130 46 46"/><path class="deco-scan__line" d="M44 86h84"/></svg>
+        </article>
+
+        <article class="svc svc--white" data-tilt data-reveal style="--i:3">
+          <div class="svc__in">
+            <div class="svc__meta"><span class="svc__num">04</span><span class="tag tag--line">white-hat</span></div>
+            <h3 class="svc__title">Арбитраж трафика</h3>
+            <p class="svc__text">Запуск и масштабирование кампаний в Meta Ads под офферы. Связки, креативы, аудитории — и кабинеты, которые не улетают в бан на третий день.</p>
+            <a class="svc__go" href="#arbitrage" aria-label="Арбитраж трафика — подробнее"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+          </div>
+          <svg class="svc__deco deco-chart" viewBox="0 0 320 180" aria-hidden="true">
+            <defs>
+              <linearGradient id="chart-stroke" x1="0" x2="1"><stop offset="0" stop-color="#D9361A"/><stop offset="1" stop-color="#FF8A4C"/></linearGradient>
+              <linearGradient id="chart-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FF6A2A" stop-opacity=".28"/><stop offset="1" stop-color="#FF6A2A" stop-opacity="0"/></linearGradient>
+            </defs>
+            <path class="deco-chart__area" d="M10 160 L70 128 L120 140 L170 96 L220 104 L270 52 L310 24 L310 180 L10 180 Z" fill="url(#chart-fill)"/>
+            <path class="deco-chart__line" d="M10 160 L70 128 L120 140 L170 96 L220 104 L270 52 L310 24" fill="none" stroke="url(#chart-stroke)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+            <circle class="deco-chart__dot" cx="310" cy="24" r="8"/>
+          </svg>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
 
 <footer class="foot">
   <div class="wrap foot__in">
