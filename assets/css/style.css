@@ -734,6 +734,73 @@ ul { padding: 0; list-style: none; }
   .steps__cta { margin-top: 56px; }
 }
 
+/* ==========================================================
+   СКОЛЬКО? — розовая секция, правила-ценники
+   ========================================================== */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.price {
+  position: relative; overflow: clip; color: var(--ink); padding-block: 88px 100px;
+  background:
+    radial-gradient(70% 60% at 15% 0%, rgba(255,255,255,.35), rgba(255,255,255,0) 60%),
+    radial-gradient(60% 50% at 100% 100%, rgba(217,54,26,.22), rgba(217,54,26,0) 70%),
+    var(--pink);
+}
+.eyebrow--ink { color: var(--ink); display: inline-flex; align-items: center; gap: 10px; }
+.eyebrow--ink::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink); }
+
+.price__title {
+  margin-top: 14px;
+  font: 800 calc((min(100vw, var(--max)) - 2 * var(--gutter)) / 6.95) / .9 var(--f-display);
+  text-transform: uppercase; letter-spacing: -.05em; white-space: nowrap;
+}
+.price__title .l { display: inline-block; }
+.price__title .l--q { color: var(--white); -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill; transform-origin: 50% 90%; animation: q-wobble 3.2s ease-in-out infinite; }
+@keyframes q-wobble { 0%, 100% { rotate: 0deg; } 20% { rotate: 12deg; } 40% { rotate: -8deg; } 60% { rotate: 4deg; } 75% { rotate: 0deg; } }
+.js .price__title .l { opacity: 0; translate: 0 60%; transition: opacity .6s var(--ease), translate .8s var(--ease-back); transition-delay: calc(var(--i) * 55ms + .1s); }
+.js .price__title.is-in .l { opacity: 1; translate: 0 0; }
+
+.price__sub { margin-top: 18px; max-width: 30ch; font: 600 20px/1.3 var(--f-display); letter-spacing: -.01em; }
+
+.ptags { display: grid; gap: 14px; margin-top: 36px; filter: drop-shadow(0 16px 22px rgba(120, 20, 50, .2)); }
+.ptag {
+  --notch: 22px;
+  position: relative; display: grid; grid-template-columns: auto 1fr; column-gap: 14px; row-gap: 4px; align-items: start;
+  padding: 20px 20px 20px calc(var(--notch) + 26px);
+  background: var(--white); border-radius: 0 18px 18px 0;
+  clip-path: polygon(var(--notch) 0, 100% 0, 100% 100%, var(--notch) 100%, 0 50%);
+  transform-origin: calc(var(--notch) + 8px) 50%;
+  transition: rotate .5s var(--ease-back);
+}
+.ptag::before { /* дырка ценника */
+  content: ""; position: absolute; left: calc(var(--notch) - 2px); top: 50%; width: 12px; height: 12px; translate: 0 -50%;
+  border-radius: 50%; background: var(--pink); box-shadow: inset 0 2px 3px rgba(0,0,0,.25);
+}
+.ptag:hover { rotate: -2.5deg; }
+.ptag__ic { grid-row: span 2; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--light); color: var(--accent); }
+.ptag__ic .ic { width: 20px; height: 20px; }
+.ptag__title { font: 700 18px/1.25 var(--f-body); }
+.ptag__title mark { background: var(--accent); color: var(--white); padding: 0 6px; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.ptag__text { color: var(--muted-l); font-size: 15px; line-height: 1.45; }
+
+.ptag--main { background: var(--ink); color: var(--white); }
+.ptag--main .ptag__ic { background: var(--accent); color: var(--white); }
+.ptag--main .ptag__text { color: #CFCAC6; }
+.ptag--main .ptag__title { font-size: 20px; }
+
+.price__note { margin-top: 26px; font-size: 15px; font-weight: 500; max-width: 60ch; }
+
+@media (min-width: 900px) {
+  .price { padding-block: 120px 140px; }
+  .price__sub { font-size: 26px; margin-top: 24px; }
+  .ptags { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px; margin-top: 56px; }
+  .ptag { grid-column: span 2; min-height: 150px; padding: 26px 26px 26px calc(var(--notch) + 30px); }
+  .ptag:nth-child(4) { grid-column: span 3; }
+  .ptag--main { grid-column: span 3; align-content: center; }
+  .ptag--main .ptag__title { font-size: 24px; }
+  .ptag__title { font-size: 19px; }
+  .price__note { margin-top: 34px; }
+}
+
 /* ---------- появление при прокрутке ---------- */
 .js [data-reveal] { opacity: 0; translate: 0 40px; transition: opacity .8s var(--ease), translate .9s var(--ease); transition-delay: calc(var(--i, 0) * 90ms); }
 .js [data-reveal].is-in { opacity: 1; translate: 0 0; }
