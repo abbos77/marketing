@@ -678,6 +678,62 @@ ul { padding: 0; list-style: none; }
   .call__card { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center; gap: 56px; padding: 56px; border-radius: 40px; }
 }
 
+/* ==========================================================
+   КАК Я РАБОТАЮ — тёмная, таймлайн заполняется при прокрутке (--prog от JS)
+   ========================================================== */
+.steps { --prog: 0; position: relative; overflow: clip; padding-block: 96px; }
+.steps::before { content: ""; position: absolute; left: 50%; top: -30%; width: 900px; height: 900px; translate: -50% 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,106,42,.12), rgba(255,106,42,0)); pointer-events: none; }
+.steps .sec-head { position: relative; }
+.steps .h2 { font-size: clamp(28px, 7.4vw, 60px); }
+
+.steps__list { position: relative; display: grid; gap: 16px; padding: 0 0 0 46px; margin: 0; list-style: none; }
+.steps__rail { position: absolute; left: 21px; top: 26px; bottom: 26px; width: 2px; background: var(--line-dark); border-radius: 2px; }
+.steps__rail i { position: absolute; inset: 0; transform-origin: top; scale: 1 var(--prog); background: linear-gradient(var(--accent-hi), var(--accent)); box-shadow: 0 0 14px rgba(255,106,42,.7); border-radius: inherit; }
+
+.step {
+  position: relative; overflow: hidden;
+  padding: 22px 22px 24px; border-radius: 22px;
+  background: var(--dark-2); border: 1px solid var(--line-dark);
+  transition: border-color .5s, box-shadow .5s, background-color .5s;
+}
+.step.is-lit { border-color: rgba(255,106,42,.55); box-shadow: 0 20px 50px -30px rgba(255,90,30,.7); background: #1B1514; }
+.step__dot {
+  position: absolute; left: -46px; top: 22px;
+  display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+  background: var(--dark); border: 2px solid var(--line-dark); color: var(--muted-d);
+  transition: background-color .4s, border-color .4s, color .4s, scale .4s var(--ease-back);
+}
+.step { overflow: visible; }
+.step.is-lit .step__dot { background: var(--accent); border-color: var(--accent); color: var(--white); scale: 1.08; box-shadow: 0 0 0 6px rgba(255,106,42,.16); }
+.step__ghost {
+  position: absolute; right: 12px; bottom: 6px; pointer-events: none;
+  font: 800 70px/.8 var(--f-display); letter-spacing: -.05em;
+  color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.08);
+  transition: -webkit-text-stroke-color .5s;
+}
+.step.is-lit .step__ghost { -webkit-text-stroke-color: rgba(255,106,42,.22); }
+@media (min-width: 900px) { .step.is-lit .step__ghost { -webkit-text-stroke-color: rgba(255,106,42,.35); } }
+.step__num { font: 600 12px/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: var(--muted-d); transition: color .4s; }
+.step.is-lit .step__num { color: var(--accent-hi); }
+.step__title { margin-top: 10px; font: 700 21px/1.2 var(--f-display); letter-spacing: -.02em; position: relative; }
+.step__text { margin-top: 10px; color: var(--muted-d); font-size: 15px; max-width: 34ch; position: relative; }
+
+.steps__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; margin-top: 40px; }
+.steps__cta .hero__call { margin-top: 0; }
+
+@media (min-width: 900px) {
+  .steps { padding-block: 130px; }
+  .steps .sec-head { margin-bottom: 64px; }
+  .steps__list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; padding: 70px 0 0; }
+  .steps__rail { left: 22px; right: 22px; top: 21px; bottom: auto; width: auto; height: 2px; }
+  .steps__rail i { transform-origin: left; scale: var(--prog) 1; background: linear-gradient(90deg, var(--accent), var(--accent-hi)); }
+  .step { padding: 28px 24px 34px; min-height: 280px; }
+  .step__dot { left: 0; top: -70px; }
+  .step__title { margin-top: 14px; font-size: 22px; }
+  .step__ghost { font-size: 118px; right: 12px; bottom: 10px; }
+  .steps__cta { margin-top: 56px; }
+}
+
 /* ---------- появление при прокрутке ---------- */
 .js [data-reveal] { opacity: 0; translate: 0 40px; transition: opacity .8s var(--ease), translate .9s var(--ease); transition-delay: calc(var(--i, 0) * 90ms); }
 .js [data-reveal].is-in { opacity: 1; translate: 0 0; }

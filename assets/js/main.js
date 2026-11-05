@@ -23,7 +23,11 @@
     revealEls.forEach(el => io.observe(el));
   }
 
-  if (reduce) return;
+  if (reduce) {
+    document.querySelectorAll('[data-progress]').forEach(el => el.style.setProperty('--prog', '1'));
+    document.querySelectorAll('.step').forEach(el => el.classList.add('is-lit'));
+    return;
+  }
 
   /* ---------- hero: параллакс от мыши и прокрутки ---------- */
   const hero = document.querySelector('.hero-zone');
@@ -57,6 +61,22 @@
 
   let lastY = scrollY, vel = 0, dir = 1, last = performance.now();
 
+  /* таймлайн «Как я работаю»: --prog 0…1 и подсветка шагов */
+  const progs = [...document.querySelectorAll('[data-progress]')].map(el => {
+    const list = el.querySelector('.steps__list');
+    return { el, list, steps: [...el.querySelectorAll('.step')], visible: false, offset: 0, span: 1 };
+  });
+  const measureProg = () => progs.forEach(pr => {
+    const lr = pr.list.getBoundingClientRect(), er = pr.el.getBoundingClientRect();
+    pr.offset = lr.top - er.top;              // начало списка внутри секции
+    pr.span = Math.max(1, lr.height * 0.9);   // путь заполнения
+  });
+  measureProg(); addEventListener('resize', measureProg);
+  const prIO = new IntersectionObserver(entries => entries.forEach(e => {
+    const pr = progs.find(x => x.el === e.target); if (pr) pr.visible = e.isIntersecting;
+  }));
+  progs.forEach(pr => prIO.observe(pr.el));
+
   /* секции с параллаксом от прокрутки (--sy) */
   const scrolly = [...document.querySelectorAll('[data-scrolly]')].map(el => ({ el, visible: false }));
   const syIO = new IntersectionObserver(entries => entries.forEach(e => {
@@ -80,6 +100,14 @@
       t.x -= t.speed * dir * (70 + boost) * dt;
       t.x = ((t.x % t.w) + t.w) % t.w - t.w;                        // держим в (−w, 0]
       t.el.style.transform = `translate3d(${t.x.toFixed(2)}px,0,0)`;
+    }
+
+    for (const pr of progs) {
+      if (!pr.visible) continue;
+      const r = pr.el.getBoundingClientRect();
+      const p = Math.max(0, Math.min(1, (innerHeight * 0.62 - (r.top + pr.offset)) / (pr.span || 1)));
+      pr.el.style.setProperty('--prog', p.toFixed(4));
+      pr.steps.forEach((st, i) => st.classList.toggle('is-lit', p >= (i + 0.35) / pr.steps.length));
     }
 
     for (const sec of scrolly) {
