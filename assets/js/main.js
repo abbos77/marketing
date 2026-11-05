@@ -57,6 +57,10 @@
 
   let lastY = scrollY, vel = 0, dir = 1, last = performance.now();
 
+  /* печать-сюзане: медленно крутится, от прокрутки — быстрее */
+  const spinners = [...document.querySelectorAll('[data-spin] .seal__ring')];
+  let spin = 0;
+
   function frame(now) {
     const dt = Math.min(64, now - last) / 1000; last = now;
     const y = scrollY, dy = y - lastY; lastY = y;
@@ -69,6 +73,11 @@
       t.x -= t.speed * dir * (70 + boost) * dt;
       t.x = ((t.x % t.w) + t.w) % t.w - t.w;                        // держим в (−w, 0]
       t.el.style.transform = `translate3d(${t.x.toFixed(2)}px,0,0)`;
+    }
+
+    if (spinners.length) {
+      spin = (spin + dir * (16 + Math.min(vel * 0.3, 720)) * dt) % 360;
+      for (const el of spinners) el.style.transform = `rotate(${spin.toFixed(2)}deg)`;
     }
 
     if (hero && heroVisible) {
@@ -87,6 +96,25 @@
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
+
+  /* ---------- счётчики фактов ---------- */
+  const fmt = (v, d) => v.toFixed(d).replace('.', ',');
+  const countIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      countIO.unobserve(e.target);
+      const el = e.target, to = parseFloat(el.dataset.count), from = parseFloat(el.dataset.from || '0');
+      const d = parseInt(el.dataset.decimals || '0', 10), dur = 1500, t0 = performance.now();
+      const tick = now => {
+        const k = Math.min(1, (now - t0) / dur), ease = 1 - Math.pow(1 - k, 3);
+        el.textContent = fmt(from + (to - from) * ease, d);
+        if (k < 1) requestAnimationFrame(tick);
+      };
+      el.textContent = fmt(from, d);
+      requestAnimationFrame(tick);
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('[data-count]').forEach(el => countIO.observe(el));
 
   if (!finePointer) return;
 
