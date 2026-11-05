@@ -4,6 +4,79 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
 
+  /* ==========================================================
+     НАСТРОЙКИ — контакты и пиксель меняются ТОЛЬКО здесь.
+     Все ссылки с data-link="…" на странице подставятся автоматически.
+     ========================================================== */
+  const CONFIG = {
+    telegram:  'https://t.me/bossja999',      // новый юзернейм: 'https://t.me/НОВЫЙ'
+    phone:     '+998943717923',               // для ссылки tel:
+    instagram: '',                            // 'https://instagram.com/…'
+    facebook:  '',                            // 'https://facebook.com/…'
+    pixelId:   '798392145862804',             // Meta Pixel
+  };
+
+  document.querySelectorAll('[data-link]').forEach(a => {
+    const v = CONFIG[a.dataset.link];
+    if (!v) return;
+    a.href = a.dataset.link === 'phone' ? 'tel:' + v.replace(/[^+\d]/g, '') : v;
+  });
+
+  /* ---------- Meta Pixel: PageView, Contact (клик), Lead (заявка) ---------- */
+  if (CONFIG.pixelId) {
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+      t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', CONFIG.pixelId);
+    fbq('track', 'PageView');
+  }
+  const track = ev => { if (window.fbq) window.fbq('track', ev); };
+  document.addEventListener('click', e => { if (e.target.closest('[data-event="Contact"]')) track('Contact'); });
+
+  /* ---------- форма аудита → Web3Forms ---------- */
+  const form = document.getElementById('audit-form');
+  if (form) {
+    const status = form.querySelector('[data-form-status]');
+    const btn = form.querySelector('[type="submit"]');
+    form.querySelectorAll('.field input, .field textarea').forEach(el =>
+      el.addEventListener('input', () => el.closest('.field').classList.remove('is-error')));
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      let firstBad = null;
+      form.querySelectorAll('[required]').forEach(el => {
+        const bad = !el.value.trim();
+        el.closest('.field').classList.toggle('is-error', bad);
+        el.setAttribute('aria-invalid', bad ? 'true' : 'false');
+        if (bad && !firstBad) firstBad = el;
+      });
+      if (firstBad) { firstBad.focus(); status.textContent = 'Заполните отмеченные поля.'; return; }
+      if (form.botcheck && form.botcheck.checked) return;
+
+      form.classList.remove('is-failed');
+      form.classList.add('is-sending'); btn.disabled = true;
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || !json.success) throw new Error(json.message || res.status);
+        form.classList.add('is-done');
+        status.textContent = 'Заявка у меня. Напишу вам в Telegram в ближайшее время.';
+        track('Lead');
+      } catch (err) {
+        form.classList.add('is-failed');
+        status.textContent = 'Что-то пошло не так. Напишите мне напрямую в Telegram.';
+      } finally {
+        form.classList.remove('is-sending'); btn.disabled = false;
+      }
+    });
+  }
+
   /* ---------- шапка: стекло после прокрутки ---------- */
   const head = document.querySelector('.site-head');
   const onScrollHead = () => head && head.classList.toggle('is-scrolled', scrollY > 24);
