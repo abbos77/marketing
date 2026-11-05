@@ -57,6 +57,13 @@
 
   let lastY = scrollY, vel = 0, dir = 1, last = performance.now();
 
+  /* секции с параллаксом от прокрутки (--sy) */
+  const scrolly = [...document.querySelectorAll('[data-scrolly]')].map(el => ({ el, visible: false }));
+  const syIO = new IntersectionObserver(entries => entries.forEach(e => {
+    const s = scrolly.find(x => x.el === e.target); if (s) s.visible = e.isIntersecting;
+  }));
+  scrolly.forEach(s => syIO.observe(s.el));
+
   /* печать-сюзане: медленно крутится, от прокрутки — быстрее */
   const spinners = [...document.querySelectorAll('[data-spin] .seal__ring')];
   let spin = 0;
@@ -73,6 +80,13 @@
       t.x -= t.speed * dir * (70 + boost) * dt;
       t.x = ((t.x % t.w) + t.w) % t.w - t.w;                        // держим в (−w, 0]
       t.el.style.transform = `translate3d(${t.x.toFixed(2)}px,0,0)`;
+    }
+
+    for (const sec of scrolly) {
+      if (!sec.visible) continue;
+      const r = sec.el.getBoundingClientRect();
+      const sy = ((r.top + r.height / 2) - innerHeight / 2) / innerHeight;
+      sec.el.style.setProperty('--sy', Math.max(-1, Math.min(1, sy)).toFixed(4));
     }
 
     if (spinners.length) {
@@ -115,6 +129,19 @@
     });
   }, { threshold: 0.6 });
   document.querySelectorAll('[data-count]').forEach(el => countIO.observe(el));
+
+  /* ---------- таймер «идущего» созвона ---------- */
+  document.querySelectorAll('[data-timer]').forEach(el => {
+    let sec = 0, id = null;
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !id) {
+        id = setInterval(() => {
+          sec++;
+          el.textContent = String(Math.floor(sec / 60)).padStart(2, '0') + ':' + String(sec % 60).padStart(2, '0');
+        }, 1000);
+      } else if (!e.isIntersecting && id) { clearInterval(id); id = null; }
+    }).observe(el);
+  });
 
   if (!finePointer) return;
 
