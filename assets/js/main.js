@@ -96,6 +96,14 @@
     revealEls.forEach(el => io.observe(el));
   }
 
+  /* SMIL-анимации (воронка): играют только на экране; при reduced motion — стоп-кадр */
+  document.querySelectorAll('svg[data-smil]').forEach(svg => {
+    if (!svg.pauseAnimations) return;
+    if (reduce) { svg.setCurrentTime(1.6); svg.pauseAnimations(); return; }
+    svg.pauseAnimations();
+    new IntersectionObserver(([e]) => e.isIntersecting ? svg.unpauseAnimations() : svg.pauseAnimations()).observe(svg);
+  });
+
   if (reduce) {
     document.querySelectorAll('[data-progress]').forEach(el => el.style.setProperty('--prog', '1'));
     document.querySelectorAll('.step').forEach(el => el.classList.add('is-lit'));

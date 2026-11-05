@@ -93,6 +93,8 @@
 - **Все контакты и Pixel ID — в одном месте:** объект `CONFIG` в начале `assets/js/main.js` (`telegram`, `phone`, `instagram`, `facebook`, `pixelId`). Ссылки с `data-link="telegram|phone|instagram|facebook"` подставляются автоматически. Аббос меняет их сам. (В HTML у ссылок оставлен запасной `href` на случай отключённого JS.)
 - Форма аудита (`#audit-form`): Web3Forms через `fetch` JSON, honeypot `botcheck`, свои проверки обязательных полей, состояния `is-sending / is-done / is-failed`. Проверено в Playwright с подменой ответа API: успех → `Lead`, ошибка → блок «Написать в Telegram».
 
+- «Под ключ»: в окне браузера прокручивается скриншот этого же лендинга — `assets/img/site-preview.webp` (600 px, верх страницы). **Переснять в конце работ**, когда страница будет готова (Playwright, 1440×4600 → 600 px, WebP q72).
+
 ## 6. Правила по содержанию (не нарушать)
 
 - **Никаких логотипов Meta / Facebook / Instagram**, фирменного синего Meta, слов «официальный», «партнёр Meta», «представитель Meta».
