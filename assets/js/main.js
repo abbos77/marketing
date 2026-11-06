@@ -11,16 +11,26 @@
   const CONFIG = {
     telegram:  'https://t.me/bossja999',      // новый юзернейм: 'https://t.me/НОВЫЙ'
     phone:     '+998943717923',               // для ссылки tel:
+    phoneLabel:'+998 94 371-79-23',           // как номер показан на сайте
     instagram: '',                            // 'https://instagram.com/…'
     facebook:  '',                            // 'https://facebook.com/…'
     pixelId:   '798392145862804',             // Meta Pixel
   };
 
+  const handle = url => '@' + url.replace(/[?#].*$/, '').split('/').filter(Boolean).pop();
+  const labelFor = (key, v) =>
+    key === 'phone' ? (CONFIG.phoneLabel || v) :
+    key === 'facebook' ? v.replace(/^https?:\/\/(www\.|m\.)?/, '').replace(/\/$/, '') :
+    handle(v);
   document.querySelectorAll('[data-link]').forEach(a => {
-    const v = CONFIG[a.dataset.link];
+    const key = a.dataset.link, v = CONFIG[key];
     if (!v) return;
-    a.href = a.dataset.link === 'phone' ? 'tel:' + v.replace(/[^+\d]/g, '') : v;
+    a.href = key === 'phone' ? 'tel:' + v.replace(/[^+\d]/g, '') : v;
+    const lab = a.querySelector('[data-link-label]');
+    if (lab) lab.textContent = labelFor(key, v);
   });
+  /* Instagram / Facebook появятся, как только в CONFIG будет ссылка */
+  document.querySelectorAll('[data-optional]').forEach(el => { if (!CONFIG[el.dataset.optional]) el.hidden = true; });
 
   /* ---------- Meta Pixel: PageView, Contact (клик), Lead (заявка) ---------- */
   if (CONFIG.pixelId) {

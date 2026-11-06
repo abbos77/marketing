@@ -91,6 +91,7 @@
 - Meta Pixel: ID в одном месте (`798392145862804`), события `PageView`, `Lead` (успешная отправка формы), `Contact` (клик на Telegram). Conversions API невозможен на статике — не делать.
 
 - **Все контакты и Pixel ID — в одном месте:** объект `CONFIG` в начале `assets/js/main.js` (`telegram`, `phone`, `instagram`, `facebook`, `pixelId`). Ссылки с `data-link="telegram|phone|instagram|facebook"` подставляются автоматически. Аббос меняет их сам. (В HTML у ссылок оставлен запасной `href` на случай отключённого JS.)
+- Строки Instagram / Facebook в «Контактах» (`[data-optional]`) скрыты, пока в `CONFIG` пусто, и появляются сами, как только Аббос впишет ссылку; подпись (`@handle`) берётся из ссылки. Подпись телефона — `CONFIG.phoneLabel`.
 - Форма аудита (`#audit-form`): Web3Forms через `fetch` JSON, honeypot `botcheck`, свои проверки обязательных полей, состояния `is-sending / is-done / is-failed`. Проверено в Playwright с подменой ответа API: успех → `Lead`, ошибка → блок «Написать в Telegram».
 
 - «Под ключ»: в окне браузера прокручивается скриншот этого же лендинга — `assets/img/site-preview.webp` (600 px, верх страницы). **Переснять в конце работ**, когда страница будет готова (Playwright, 1440×4600 → 600 px, WebP q72).
