@@ -127,6 +127,7 @@
 - [x] Telegram-юзернейм: @bossja999
 - [x] 4 фото-вырезки (исходники PNG в `assets/img/src/`, на сайт не публикуются): `hero-abbos.webp` (кожаный костюм) — hero; `trust-abbos.webp` (очки) — «Доверие»; `arbitrage-abbos.webp` (пуховик) — «Арбитраж»; `portrait-abbos.webp` (пиджак, руки скрещены) — «Контакты».
 - [x] 3D-объекты (WebP в `assets/img/3d/`, исходники в `assets/img/src/3d/`): hero — `coin-som`, `coin-usd`, `coin-kzt`, `chat` (иконки Instagram/Facebook убраны 05.11 по решению Аббоса; исходники `ig`/`fb`/`coins-stack` лежат только в `src/3d`, на сайте их нет); «Арбитраж» — `coin-usd`, `coin-som`, `coin-kzt`; «Услуги» — `lock`, `chain`, `shield`.
+- [x] Фото «Пишите» (06.11): `contact-abbos.webp` (зеркальные очки, исходник `src/mirror-glasses.png`). `portrait-abbos.webp` остаётся в «Созвоне» и аватаре телефона в «Под ключ».
 - [x] Фото «Доверие» заменено (05.11) на новое `trust-abbos.webp` (исходник `src/glasses-phone-2.png`).
 - [x] Список стран: Узбекистан, Кыргызстан, Таджикистан, Азербайджан
 - [x] Pixel ID: 798392145862804
