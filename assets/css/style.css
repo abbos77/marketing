@@ -947,7 +947,7 @@ ul { padding: 0; list-style: none; }
 .browser__url { flex: 1; display: inline-flex; align-items: center; gap: 6px; min-width: 0; padding: 6px 10px; border-radius: 8px; background: #222; color: #BDB8B4; font: 500 12px/1 var(--f-body); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .browser__url .ic { width: 12px; height: 12px; color: #3DDC84; }
 .browser__view { position: relative; aspect-ratio: 16 / 10; overflow: hidden; container-type: size; }
-.browser__view img { position: absolute; inset: 0 0 auto; width: 100%; height: auto; animation: site-scroll 16s ease-in-out infinite; }
+.browser__view img { position: absolute; inset: 0 0 auto; width: 100%; height: auto; animation: site-scroll 30s ease-in-out infinite; }
 .browser:hover .browser__view img { animation-play-state: paused; }
 @keyframes site-scroll { 0%, 8% { translate: 0 0; } 46%, 54% { translate: 0 calc(-100% + 100cqh); } 92%, 100% { translate: 0 0; } }
 
