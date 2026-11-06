@@ -45,6 +45,12 @@
   const track = ev => { if (window.fbq) window.fbq('track', ev); };
   document.addEventListener('click', e => { if (e.target.closest('[data-event="Contact"]')) track('Contact'); });
 
+  /* ---------- тексты сообщений формы (RU / UZ) ---------- */
+  const T = {
+    ru: { fill: 'Заполните отмеченные поля.', ok: 'Заявка у меня. Напишу вам в Telegram в ближайшее время.', fail: 'Что-то пошло не так. Напишите мне напрямую в Telegram.' },
+    uz: { fill: 'Belgilangan maydonlarni toʻldiring.', ok: 'Ariza menda. Tez orada sizga Telegram orqali yozaman.', fail: 'Nimadir xato ketdi. Menga toʻgʻridan-toʻgʻri Telegramga yozing.' },
+  }[document.documentElement.lang] || {};
+
   /* ---------- форма аудита → Web3Forms ---------- */
   const form = document.getElementById('audit-form');
   if (form) {
@@ -62,7 +68,7 @@
         el.setAttribute('aria-invalid', bad ? 'true' : 'false');
         if (bad && !firstBad) firstBad = el;
       });
-      if (firstBad) { firstBad.focus(); status.textContent = 'Заполните отмеченные поля.'; return; }
+      if (firstBad) { firstBad.focus(); status.textContent = T.fill; return; }
       if (form.botcheck && form.botcheck.checked) return;
 
       form.classList.remove('is-failed');
@@ -76,11 +82,11 @@
         const json = await res.json().catch(() => ({}));
         if (!res.ok || !json.success) throw new Error(json.message || res.status);
         form.classList.add('is-done');
-        status.textContent = 'Заявка у меня. Напишу вам в Telegram в ближайшее время.';
+        status.textContent = T.ok;
         track('Lead');
       } catch (err) {
         form.classList.add('is-failed');
-        status.textContent = 'Что-то пошло не так. Напишите мне напрямую в Telegram.';
+        status.textContent = T.fail;
       } finally {
         form.classList.remove('is-sending'); btn.disabled = false;
       }
