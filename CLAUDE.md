@@ -112,6 +112,8 @@
 - OG-картинка 1200×630 — собрать из hero (вёрстка → скриншот Playwright), положить в `/assets/img/og-ru.jpg`.
 - favicon (SVG).
 
+Сделано 06.11 (RU): `noindex` снят; canonical, OG/Twitter, JSON-LD `ProfessionalService`, `apple-touch-icon.png`. OG-картинка собирается из шаблона `tools/og-ru.html` командой `node tools/make-og.js` (папка `tools` не публикуется — `_config.yml`). `robots.txt` не нужен: для project-сайта он должен лежать в корне домена (репозиторий портфолио). `hreflang` и sitemap — вместе с UZ.
+
 ## 8. Порядок работ
 
 1. Каркас: структура папок, CSS-переменные, шрифты, зерно, лента → деплой, включить Pages
