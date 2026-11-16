@@ -116,6 +116,8 @@
 
 **UZ-версия (06.11):** `uz/index.html` **генерируется** из `index.html` скриптом `python3 tools/make-uz.py` (пары «RU → UZ», пути `../assets/`, мета, `hreflang`). Скрипт падает, если какой-то русский фрагмент не найден, и печатает оставшуюся кириллицу (должно быть 0). Порядок: правишь RU → запускаешь скрипт. Правки вычитки Аббоса вносить **в пары перевода в `tools/make-uz.py`**, а не руками в `uz/index.html` (иначе перезапишутся). Сообщения формы — объект `T` в `main.js`. Подгонка огромных UZ-заголовков — блок `html[lang="uz"]` в `style.css`. Свои OG (`og-uz.jpg`, шаблон `tools/og-uz.html`) и превью сайта (`site-preview-uz.webp`). `sitemap.xml` — обе версии. Глифы `ʻ`/`ʼ` в Unbounded и Onest есть (проверено).
 
+**UZ-тексты переписаны 16.11** (Аббос: перевод «не доносил главную мысль»). Теперь это не калька с русского, а адаптация под то, как пишут в Узбекистане: `blok / blokga tushdi / blokdan chiqarish`, `reklama akkaunti` (не «kabinet»), `biznes-menejer`, `tekshiruv` (не «diagnostika»), `maslahat`, `onlayn suhbat`. Hero: «Akkaunt blokdami?» + «Instagram va Facebook reklamasini blokdan chiqarishga yordam beraman», кнопка «Blokni bepul tekshirtirish». «Под ключ» → «Toʻliq xizmat». При правках RU сохранять этот словарь.
+
 ## 8. Порядок работ
 
 1. Каркас: структура папок, CSS-переменные, шрифты, зерно, лента → деплой, включить Pages

@@ -48,7 +48,7 @@
   /* ---------- тексты сообщений формы (RU / UZ) ---------- */
   const T = {
     ru: { fill: 'Заполните отмеченные поля.', ok: 'Заявка у меня. Напишу вам в Telegram в ближайшее время.', fail: 'Что-то пошло не так. Напишите мне напрямую в Telegram.' },
-    uz: { fill: 'Belgilangan maydonlarni toʻldiring.', ok: 'Ariza menda. Tez orada sizga Telegram orqali yozaman.', fail: 'Nimadir xato ketdi. Menga toʻgʻridan-toʻgʻri Telegramga yozing.' },
+    uz: { fill: 'Belgilangan maydonlarni toʻldiring.', ok: 'Arizangiz qabul qilindi. Tez orada Telegramda yozaman.', fail: 'Xatolik yuz berdi. Menga toʻgʻridan-toʻgʻri Telegramda yozing.' },
   }[document.documentElement.lang] || {};
 
   /* ---------- форма аудита → Web3Forms ---------- */
